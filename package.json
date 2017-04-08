@@ -1,0 +1,10 @@
+{
+  "name": "collabo-lit-search",
+  "version": "0.1",
+  "main": "index.js",
+  "author": "Hiro Kai",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^1.7.3"
+  }
+}
