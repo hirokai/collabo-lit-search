@@ -4,6 +4,12 @@
 // });
 
 
+var globalState = {
+  state: 'normal',
+  selections: [],
+  scale: 1
+};
+
 var svg = d3.select("svg"),
   width = +svg.attr("width"),
   height = +svg.attr("height");
@@ -13,17 +19,48 @@ var color = d3.scaleOrdinal(d3.schemeCategory20);
 var simulation = d3.forceSimulation()
   .force("link", d3.forceLink().id(function (d) {
     return d.id;
-  }).distance(300))
-  .force("charge", d3.forceManyBody().strength(-50))
+  }).strength((d)=> {
+    return d.typ == 'relationship' ? 0.1 : 0.03;
+  }))
+  .force("charge", d3.forceManyBody().strength((d)=> {
+    return d.typ == 'relationship' ? 10 : -400;
+  }))
   .force("center", d3.forceCenter(width / 2, height / 2));
 
 d3.json("testdata.json", function (error, graph) {
   if (error) throw error;
 
+  svg.on('click', (d)=> {
+    console.log(d3.event.target);
+    globalState.selections = [];
+  });
+
+  function get_transform() {
+    return 'translate(100,100) scale(' + globalState.scale + ')';
+  }
+
+  d3.select('body').on('keydown', ()=> {
+    console.log(d3.event.keyCode);
+    if (d3.event.keyCode == 189) {
+      globalState.scale -= 0.1;
+      const tr = get_transform();
+      d3.selectAll('g.nodes').attr('transform', tr);
+      d3.selectAll('g.links').attr('transform', tr);
+    } else if (d3.event.keyCode == 187) {
+      globalState.scale += 0.1;
+      const tr = get_transform();
+      d3.selectAll('g.nodes').attr('transform', tr);
+      d3.selectAll('g.links').attr('transform', tr);
+    }
+  });
+
+
   var link = svg.append("g")
     .attr("class", "links")
     .selectAll("line")
-    .data(graph.links,function(d) { return d.source.id + "-" + d.target.id; })
+    .data(graph.links, function (d) {
+      return d.source.id + "-" + d.target.id;
+    })
     .enter().append("line")
     .attr("stroke-width", function (d) {
       return Math.sqrt(d.value);
@@ -41,22 +78,20 @@ d3.json("testdata.json", function (error, graph) {
     .attr("data-title", function (d) {
       return d.title;
     })
+    .style('stroke', (d) => {
+      console.log(d.id);
+      return _.findIndex(globalState.selections, (s)=> {
+        console.log('s.id=', s.id);
+        return s.id == d.id
+      }) != -1 ? 'red' : 'white';
+    })
     .attr("data-id", function (d) {
       return d.id;
-    })
-    .on('mouseenter', () => {
-      const t = $(d3.event.target);
-      t.addClass('hover');
-      $('#paper-title').text(t.attr('data-title'));
-    })
-    .on('mouseleave', () => {
-      $(d3.event.target).removeClass('hover');
-      $('#paper-title').text('');
-    })
-    .call(d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended));
+    });
+
+  d3.selectAll('g.nodes').attr('transform', get_transform());
+  d3.selectAll('g.links').attr('transform', get_transform());
+
 
   node.append("title")
     .text(function (d) {
@@ -66,6 +101,8 @@ d3.json("testdata.json", function (error, graph) {
   simulation
     .nodes(graph.nodes)
     .on("tick", ticked);
+
+  restart(graph.nodes, graph.links);
 
   simulation.force("link")
     .links(graph.links);
@@ -93,24 +130,63 @@ d3.json("testdata.json", function (error, graph) {
         return d.y;
       });
   }
+
   console.log(graph.links);
 
-  function restart(nodes,links) {
+  function restart(nodes, links) {
 
     // Apply the general update pattern to the nodes.
-    node = node.data(nodes, function(d) { return d.id;});
+    node = node.data(nodes, function (d) {
+      return d.id;
+    });
     node.exit().remove();
-    node = node.enter().append("circle").attr("fill", function(d) { return color(d.id); })
-      .attr("data-id", (d) => {return d.id;})
-      .attr("r", 50).merge(node);
+    node = node.enter().append("circle").attr("fill", function (d) {
+      return color(d.id);
+    })
+      .attr("data-title", function (d) {
+        return d.title;
+      })
+      .style('stroke', (d) => {
+        console.log('d.id=', d.id);
+        // return 'red';
+        return _.findIndex(globalState.selections, (s)=> {
+          console.log('s.id=', s.id);
+          return s.id == d.id
+        }) != -1 ? 'red' : 'white';
+      })
+      .attr("data-id", (d) => {
+        return d.id;
+      })
+      .attr("r", (d)=> {
+        return d.typ == 'relationship' ? 10 : 50
+      }).merge(node);
 
     node.call(d3.drag()
       .on("start", dragstarted)
       .on("drag", dragged)
       .on("end", dragended));
 
+    node.on('mouseenter', () => {
+      const t = $(d3.event.target);
+      t.addClass('hover');
+      $('#paper-title').text(t.attr('data-title'));
+    }).on('mouseleave', () => {
+      $(d3.event.target).removeClass('hover');
+      $('#paper-title').text('');
+    })
+
+
+    node.on('click', (d)=> {
+      globalState.selections.push(d);
+      globalState.selections = _.uniqBy(globalState.selections, 'id');
+      console.log('' + globalState.selections.length + ' selections.');
+      d3.event.stopPropagation();
+    });
+
     // Apply the general update pattern to the links.
-    link = link.data(links, function(d) { return d.source.id + "-" + d.target.id; });
+    link = link.data(links, function (d) {
+      return d.source.id + "-" + d.target.id;
+    });
     link.exit().remove();
     link = link.enter().append("line").merge(link);
 
@@ -120,13 +196,13 @@ d3.json("testdata.json", function (error, graph) {
     simulation.alpha(1).restart();
   }
 
-  function mk_unique_id(){
-    return ""+new Date().valueOf();
+  function mk_unique_id() {
+    return "" + new Date().valueOf();
   }
 
   $.contextMenu({
     selector: 'circle',
-    trigger: 'left',
+    trigger: 'right',
     callback: function (key, options) {
       const self = this;
       if (key == 'delete') {
@@ -142,21 +218,31 @@ d3.json("testdata.json", function (error, graph) {
         link.data(graph.links).exit().remove();
       } else if (key == 'add') {
         console.log(graph.links);
-        const n = {id: mk_unique_id(),title: "New paper"};
+        const n = {id: mk_unique_id(), title: "New paper"};
         graph.nodes.push(n);
         const from = _.find(graph.nodes, (v)=> {
           return v.id == $(self).attr('data-id');
         });
         // console.log(from,n);
-        graph.links.push({source: from, target: n,value: 10});
-        restart(graph.nodes,graph.links);
-
+        graph.links.push({source: from, target: n, value: 10});
+        restart(graph.nodes, graph.links);
+      } else if (key == 'connect') {
+        const desc = window.prompt('グルーピングの理由を入力');
+        if (desc) {
+          const n = {id: mk_unique_id(), title: desc, typ: "relationship"};
+          graph.nodes.push(n);
+          _.map(globalState.selections, (s) => {
+            graph.links.push({source: s.id, target: n.id, value: 10});
+          });
+          globalState.selections = [];
+          restart(graph.nodes, graph.links);
+        }
       }
     },
     items: {
       "add": {name: "Add paper", icon: "add"},
       "edit": {name: "Edit", icon: "edit"},
-      "cut": {name: "Cut", icon: "cut"},
+      "connect": {name: "Connect", icon: "fa-arrow-right"},
       copy: {name: "Copy", icon: "copy"},
       "paste": {name: "Paste", icon: "paste"},
       "delete": {name: "Delete", icon: "delete"},
