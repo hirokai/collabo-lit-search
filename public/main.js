@@ -100,7 +100,14 @@ d3.json("testdata.json", function (error, graph) {
     // Apply the general update pattern to the nodes.
     node = node.data(nodes, function(d) { return d.id;});
     node.exit().remove();
-    node = node.enter().append("circle").attr("fill", function(d) { return color(d.id); }).attr("r", 8).merge(node);
+    node = node.enter().append("circle").attr("fill", function(d) { return color(d.id); })
+      .attr("data-id", (d) => {return d.id;})
+      .attr("r", 50).merge(node);
+
+    node.call(d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended));
 
     // Apply the general update pattern to the links.
     link = link.data(links, function(d) { return d.source.id + "-" + d.target.id; });
@@ -111,6 +118,10 @@ d3.json("testdata.json", function (error, graph) {
     simulation.nodes(nodes);
     simulation.force("link").links(links);
     simulation.alpha(1).restart();
+  }
+
+  function mk_unique_id(){
+    return ""+new Date().valueOf();
   }
 
   $.contextMenu({
@@ -131,10 +142,13 @@ d3.json("testdata.json", function (error, graph) {
         link.data(graph.links).exit().remove();
       } else if (key == 'add') {
         console.log(graph.links);
-        const n = {id: "Hoge" + Math.floor(Math.random() * 100),title: "New paper"};
+        const n = {id: mk_unique_id(),title: "New paper"};
         graph.nodes.push(n);
-        console.log(graph.nodes[0],n);
-        graph.links.push({source: graph.nodes[0], target: n,value: 10});
+        const from = _.find(graph.nodes, (v)=> {
+          return v.id == $(self).attr('data-id');
+        });
+        // console.log(from,n);
+        graph.links.push({source: from, target: n,value: 10});
         restart(graph.nodes,graph.links);
 
       }
