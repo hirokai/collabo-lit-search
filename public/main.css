@@ -1,0 +1,28 @@
+body {
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+svg {
+  background: #eeeedd;
+}
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+circle.hover {
+  fill: #ff8551;
+}
+
+#paper-info {
+  width: 1200px;
+  height: 200px;
+  background: #ffeef7;
+}

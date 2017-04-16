@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {"id": "Napoleon", "title": "Test paper 1", "group": 8},
+    {"id": "Mlle.Baptistine", "group": 8},
+    {"id": "Mme.Magloire", "group": 3},
+    {"id": "Myriel", "group": 3}
+  ],
+  "links": [
+    {"source": "Napoleon", "target": "Myriel", "value": 1},
+    {"source": "Mlle.Baptistine", "target": "Myriel", "value": 8},
+    {"source": "Mme.Magloire", "target": "Myriel", "value": 10}
+  ]
+}
