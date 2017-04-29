@@ -5,8 +5,12 @@ const io = require('socket.io')(http);
 const fs = require('fs');
 
 
+app.get('/cols/', (req,res) => {
+  res.redirect('/');
+});
+
 app.use(express.static('public'));
-app.listen(3000);
+app.listen(80);
 
 setInterval(() => {
   io.emit('add_node', { from: 'Hoge', to: 'Fuga' });
