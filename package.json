@@ -1,11 +1,16 @@
 {
   "name": "collabo-lit-search",
-  "version": "0.1",
+  "version": "0.1.0",
   "main": "index.js",
   "author": "Hiro Kai",
   "license": "MIT",
   "dependencies": {
     "express": "^4.15.2",
     "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.44.2"
   }
 }

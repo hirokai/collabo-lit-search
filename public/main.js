@@ -35,8 +35,15 @@ d3.json("testdata.json", function (error, graph) {
     globalState.selections = [];
   });
 
+  const papers = [
+    {title: "Hoge"},
+    {title: "Fuga"}
+  ];
+
+  update_paper_list(papers);
+
   function get_transform() {
-    return 'translate(100,100) scale(' + globalState.scale + ')';
+    return 'translate(300,300) scale(' + globalState.scale + ')';
   }
 
   d3.select('body').on('keydown', ()=> {
