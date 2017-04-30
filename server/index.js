@@ -6,7 +6,8 @@ const fs = require('fs');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
-var colors = require('colors');
+const colors = require('colors');
+const mkdirp = require('mkdirp');
 
 app.get('/cols/', (req, res) => {
   res.redirect('/');
@@ -27,7 +28,7 @@ function read_cache(word, kind){
 function save_cache(word, kind, dat) {
   const folder = __dirname + '/cache/' + kind;
   if (!fs.existsSync(folder)) {
-    fs.mkdirSync(folder);
+    mkdirp(folder);
   }
   const path = folder + '/' + word + '.html';
   fs.writeFileSync(path, dat);
