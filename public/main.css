@@ -48,6 +48,11 @@ body {
     background: #e2f3ff;
 }
 
+#paper-list h3 {
+    font-size: 14px;
+    margin: 0px inherit 0px inherit;
+}
+
 .links line {
     stroke: #999;
     stroke-opacity: 0.6;

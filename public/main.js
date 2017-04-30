@@ -4,6 +4,13 @@
 // });
 
 
+function initializeData(){
+  const papers = JSON.parse(localStorage.getItem('cols.papers'));
+  update_paper_list(papers);
+}
+
+initializeData();
+
 var globalState = {
   state: 'normal',
   selections: [],
@@ -35,23 +42,23 @@ d3.json("testdata.json", function (error, graph) {
     globalState.selections = [];
   });
 
-  const papers = [
-    {title: "Hoge"},
-    {title: "Fuga"}
-  ];
-
-  update_paper_list(papers);
-
   function get_transform() {
     return 'translate(300,300) scale(' + globalState.scale + ')';
   }
 
   function do_search(keyword) {
     console.log("do_search(): " + keyword);
+    axios.get("/search",{params: {q: keyword}}).then((res)=>{
+      console.log(res.data);
+      save_paper_list(res.data.titles);
+      update_paper_list(res.data.titles);
+    }).catch((err)=>{
+      console.log(err);
+    });
   }
 
   $("#search-go").click(() => {
-    do_search($("search-word").val());
+    do_search($("#search-word").val());
   });
 
   d3.select('body').on('keydown', () => {

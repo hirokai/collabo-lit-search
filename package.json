@@ -5,7 +5,11 @@
   "author": "Hiro Kai",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.16.1",
+    "cheerio": "^0.22.0",
+    "colors": "^1.1.2",
     "express": "^4.15.2",
+    "iconv-lite": "^0.4.16",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
