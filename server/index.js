@@ -22,7 +22,7 @@ function exists_cache(word,kind){
 function read_cache(word, kind){
   const folder = __dirname + '/cache/' + kind;
   const path = folder + '/' + word + '.html';
-  return exists_cache(word) ? mk_json_from_html(fs.readFileSync(path)) : null;
+  return fs.existsSync(path) ? mk_json_from_html(fs.readFileSync(path)) : null;
 }
 
 function save_cache(word, kind, dat) {
