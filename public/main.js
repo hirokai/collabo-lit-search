@@ -46,9 +46,25 @@ d3.json("testdata.json", function (error, graph) {
     return 'translate(300,300) scale(' + globalState.scale + ')';
   }
 
+  function do_search(keyword){
+    console.log("do_search(): " + keyword);
+  }
+
+  $("#search-go").click(()=>{
+    do_search($("search-word").val());
+  });
+
   d3.select('body').on('keydown', ()=> {
-    console.log(d3.event.keyCode);
-    if (d3.event.keyCode == 189) {
+    // console.log(d3.event.keyCode);
+    if(d3.event.keyCode == 13) {
+      const el = $("#search-word");
+      if(el.is(":focus")) {
+        const keyword = el.val();
+        do_search(keyword);
+      }else{
+        console.log('focus somewhere else');
+      }
+    }else if (d3.event.keyCode == 189) {
       globalState.scale -= 0.1;
       const tr = get_transform();
       d3.selectAll('g.nodes').attr('transform', tr);

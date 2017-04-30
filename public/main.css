@@ -10,6 +10,26 @@ body {
   border: 1px solid #ffa199;
 }
 
+#search-box {
+  position: absolute;
+  left: 615px;
+  top: 5px;
+  width: 600px;
+  height: 45px;
+  background: #fff6e0;
+}
+
+#search-word {
+  width: 500px;
+  margin: 5px 10px 10px 7px;
+  font-size: 20px;
+  font-family: 'Verdana', sans-serif;
+}
+
+#search-button {
+  width: 80px;
+}
+
 #paper-graph {
   position: absolute;
   left: 5px;
@@ -22,9 +42,9 @@ body {
 #paper-list {
   position: absolute;
   left: 615px;
-  top: 5px;
+  top: 60px;
   width: 600px;
-  height: 600px;
+  height: 560px;
   background: #e2f3ff;
 }
 
