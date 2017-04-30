@@ -1,78 +1,78 @@
 body {
-  font-family: "Helvetica Neue", sans-serif;
+    font-family: "Helvetica Neue", sans-serif;
 }
 
 .paper-list-entry {
-  background: pink;
-  margin: 10px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  border: 1px solid #ffa199;
+    background: pink;
+    margin: 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #ffa199;
 }
 
 #search-box {
-  position: absolute;
-  left: 615px;
-  top: 5px;
-  width: 600px;
-  height: 45px;
-  background: #fff6e0;
+    position: absolute;
+    left: 615px;
+    top: 5px;
+    width: 600px;
+    height: 45px;
+    background: #fff6e0;
 }
 
 #search-word {
-  width: 500px;
-  margin: 5px 10px 10px 7px;
-  font-size: 20px;
-  font-family: 'Verdana', sans-serif;
+    width: 500px;
+    margin: 5px 10px 10px 7px;
+    font-size: 20px;
+    font-family: 'Verdana', sans-serif;
 }
 
 #search-button {
-  width: 80px;
+    width: 80px;
 }
 
 #paper-graph {
-  position: absolute;
-  left: 5px;
-  top: 5px;
-  width: 600px;
-  height: 600px;
-  background: #eeeedd;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 600px;
+    height: 600px;
+    background: #eeeedd;
 }
 
 #paper-list {
-  position: absolute;
-  left: 615px;
-  top: 60px;
-  width: 600px;
-  height: 560px;
-  background: #e2f3ff;
+    position: absolute;
+    left: 615px;
+    top: 60px;
+    width: 600px;
+    height: 560px;
+    background: #e2f3ff;
 }
 
 .links line {
-  stroke: #999;
-  stroke-opacity: 0.6;
+    stroke: #999;
+    stroke-opacity: 0.6;
 }
 
 .nodes circle {
-  /*stroke: #fff;*/
-  stroke-width: 1.5px;
-  cursor: pointer;
+    /*stroke: #fff;*/
+    stroke-width: 1.5px;
+    cursor: pointer;
 }
 
 circle.hover {
-  stroke-width: 3px;
-  stroke: #ff7d62;
+    stroke-width: 3px;
+    stroke: #ff7d62;
 }
 
 circle.selected {
-  stroke: #ff2700;
+    stroke: #ff2700;
 }
 
 #paper-info {
-  position: absolute;
-  left: 5px;
-  top: 615px;
-  width: 1210px;
-  height: 200px;
-  background: #eeeedd;
+    position: absolute;
+    left: 5px;
+    top: 615px;
+    width: 1210px;
+    height: 200px;
+    background: #eeeedd;
 }

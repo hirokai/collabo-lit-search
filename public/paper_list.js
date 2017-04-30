@@ -3,7 +3,7 @@ function update_paper_list(papers) {
   const list = $('#paper-list');
   _.map(papers, (p) => {
     const n = $('<div/>');
-    n.toggleClass('paper-list-entry',true);
+    n.toggleClass('paper-list-entry', true);
     const t = $('<h3/>');
     t.text(p.title);
     const t2 = $('<p/>');

@@ -19,10 +19,10 @@ var color = d3.scaleOrdinal(d3.schemeCategory20);
 var simulation = d3.forceSimulation()
   .force("link", d3.forceLink().id(function (d) {
     return d.id;
-  }).strength((d)=> {
+  }).strength((d) => {
     return d.typ == 'relationship' ? 0.1 : 0.03;
   }))
-  .force("charge", d3.forceManyBody().strength((d)=> {
+  .force("charge", d3.forceManyBody().strength((d) => {
     return d.typ == 'relationship' ? 10 : -400;
   }))
   .force("center", d3.forceCenter(width / 2, height / 2));
@@ -30,7 +30,7 @@ var simulation = d3.forceSimulation()
 d3.json("testdata.json", function (error, graph) {
   if (error) throw error;
 
-  svg.on('click', (d)=> {
+  svg.on('click', (d) => {
     console.log(d3.event.target);
     globalState.selections = [];
   });
@@ -46,25 +46,25 @@ d3.json("testdata.json", function (error, graph) {
     return 'translate(300,300) scale(' + globalState.scale + ')';
   }
 
-  function do_search(keyword){
+  function do_search(keyword) {
     console.log("do_search(): " + keyword);
   }
 
-  $("#search-go").click(()=>{
+  $("#search-go").click(() => {
     do_search($("search-word").val());
   });
 
-  d3.select('body').on('keydown', ()=> {
+  d3.select('body').on('keydown', () => {
     // console.log(d3.event.keyCode);
-    if(d3.event.keyCode == 13) {
+    if (d3.event.keyCode == 13) {
       const el = $("#search-word");
-      if(el.is(":focus")) {
+      if (el.is(":focus")) {
         const keyword = el.val();
         do_search(keyword);
-      }else{
+      } else {
         console.log('focus somewhere else');
       }
-    }else if (d3.event.keyCode == 189) {
+    } else if (d3.event.keyCode == 189) {
       globalState.scale -= 0.1;
       const tr = get_transform();
       d3.selectAll('g.nodes').attr('transform', tr);
@@ -103,7 +103,7 @@ d3.json("testdata.json", function (error, graph) {
     })
     .style('stroke', (d) => {
       console.log(d.id);
-      return _.findIndex(globalState.selections, (s)=> {
+      return _.findIndex(globalState.selections, (s) => {
         console.log('s.id=', s.id);
         return s.id == d.id
       }) != -1 ? 'red' : 'white';
@@ -172,7 +172,7 @@ d3.json("testdata.json", function (error, graph) {
       .style('stroke', (d) => {
         console.log('d.id=', d.id);
         // return 'red';
-        return _.findIndex(globalState.selections, (s)=> {
+        return _.findIndex(globalState.selections, (s) => {
           console.log('s.id=', s.id);
           return s.id == d.id
         }) != -1 ? 'red' : 'white';
@@ -180,7 +180,7 @@ d3.json("testdata.json", function (error, graph) {
       .attr("data-id", (d) => {
         return d.id;
       })
-      .attr("r", (d)=> {
+      .attr("r", (d) => {
         return d.typ == 'relationship' ? 10 : 50
       }).merge(node);
 
@@ -199,7 +199,7 @@ d3.json("testdata.json", function (error, graph) {
     })
 
 
-    node.on('click', (d)=> {
+    node.on('click', (d) => {
       globalState.selections.push(d);
       globalState.selections = _.uniqBy(globalState.selections, 'id');
       console.log('' + globalState.selections.length + ' selections.');
@@ -229,11 +229,11 @@ d3.json("testdata.json", function (error, graph) {
     callback: function (key, options) {
       const self = this;
       if (key == 'delete') {
-        _.remove(graph.nodes, (v)=> {
+        _.remove(graph.nodes, (v) => {
           console.log(v.id, $(self).attr('data-id'));
           return v.id == $(self).attr('data-id');
         });
-        _.remove(graph.links, (v)=> {
+        _.remove(graph.links, (v) => {
           const id = $(self).attr('data-id');
           return v.source.id == id || v.target.id == id;
         });
@@ -243,7 +243,7 @@ d3.json("testdata.json", function (error, graph) {
         console.log(graph.links);
         const n = {id: mk_unique_id(), title: "New paper"};
         graph.nodes.push(n);
-        const from = _.find(graph.nodes, (v)=> {
+        const from = _.find(graph.nodes, (v) => {
           return v.id == $(self).attr('data-id');
         });
         // console.log(from,n);
