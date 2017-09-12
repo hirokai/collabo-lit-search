@@ -4,7 +4,10 @@
 // });
 
 
-function initializeData(){
+function initializeData() {
+  const d = localStorage.getItem('cols.papers');
+  if (!d)
+    localStorage.setItem('cols.papers', '[]');
   const papers = JSON.parse(localStorage.getItem('cols.papers'));
   update_paper_list(papers);
 }
@@ -48,11 +51,11 @@ d3.json("testdata.json", function (error, graph) {
 
   function do_search(keyword) {
     console.log("do_search(): " + keyword);
-    axios.get("/search",{params: {q: keyword}}).then((res)=>{
+    axios.get("/search", {params: {q: keyword}}).then((res)=> {
       console.log(res.data);
       save_paper_list(res.data.titles);
       update_paper_list(res.data.titles);
-    }).catch((err)=>{
+    }).catch((err)=> {
       console.log(err);
     });
   }
@@ -308,3 +311,28 @@ function dragended(d) {
   d.fx = null;
   d.fy = null;
 }
+
+
+pubnub = new PubNub({
+  publishKey: "pub-c-c19c6cd9-7cd8-4df6-99eb-f74cef20df2f",
+  subscribeKey: "sub-c-7192bdba-979e-11e7-9b33-b625e713fcab"
+});
+
+pubnub.subscribe({
+  channels: ['browse_history']
+});
+
+
+
+pubnub.addListener({
+  message: (d) => {
+    console.log('pubnub.subscribe', d);
+    if(d.message.title){
+      var p = $('<p/>');
+      p.attr('class','activity_entry');
+      p.html('開きました: ' + d.message.title);
+      $('#paper-list').append(p);
+    }
+  }
+});
+

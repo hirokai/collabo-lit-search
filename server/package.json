@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "body-parser": "^1.18.0",
+    "pubnub": "^4.15.1"
+  }
+}

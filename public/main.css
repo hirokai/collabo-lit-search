@@ -30,6 +30,11 @@ body {
     width: 80px;
 }
 
+.activity_entry {
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
 #paper-graph {
     position: absolute;
     left: 5px;
