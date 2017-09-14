@@ -16,7 +16,7 @@
     "https://ajax.googleapis.com/"
   ],
   "background": {
-    "scripts": ["jquery.min.js","pubnub.min.js", "eventPage.js"],
+    "scripts": ["jquery.min.js","lodash.min.js", "pubnub.min.js", "eventPage.js"],
     "persistent": false
   }
 }
