@@ -93,6 +93,8 @@ function renderStatus(statusText) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+        // chrome.notifications.create('1',{type: 'basic', iconUrl: 'icon.png', title: 'Cols', message: tab.title});
+
   getCurrentTabUrl(function(url) {
     // Put the image URL in Google search.
     renderStatus('Performing Google Image search for ' + url);

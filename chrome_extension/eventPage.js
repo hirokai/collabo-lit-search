@@ -5,8 +5,8 @@
 const username = 'Kai';
 
 const watchTarget = (url) => {
-  const urls = ["https://www.nature.com/",'http://pubs.acs.org/doi/'];
-  if(_.find(urls,(u) => {return url.indexOf(u) == 0;})){
+  const urls = ["www.nature.com/",'pubs.acs.org/doi/','journals.plos.org/'];
+  if(_.find(urls,(u) => {const idx = url.indexOf(u); return idx == 8 || idx == 7;})){
     return true;
   }else{
     return false;
@@ -25,8 +25,10 @@ var title_list = {};
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   // console.debug(changeInfo);
   if (watchTarget(tab.url)) {
+    chrome.browserAction.setIcon({path: 'target.png'});
     var str = '';
     if (changeInfo.title) {
+      // chrome.notifications.create('1',{type: 'basic', iconUrl: 'icon.png', title: 'Cols', message: tab.title});
       title_list[tab.url] = tab.title;
       str += 'Loading: ' + changeInfo.title + ' ';
       if(tab.openerTabId){
@@ -53,6 +55,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
     str += tab.url;
     console.log(str);
+  }else{
+    chrome.browserAction.setIcon({path: 'icon.png'});
   }
 });
 
