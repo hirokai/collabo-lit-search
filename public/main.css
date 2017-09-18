@@ -5,8 +5,8 @@ body {
 .paper-list-entry {
     font-size: 10px;
     float: left;
-    width: 200px;
-    height: 100px;
+    width: 100px;
+    height: 30px;
     overflow: hidden;
     background: pink;
     margin: 10px;
@@ -14,6 +14,31 @@ body {
     border-radius: 3px;
     border: 1px solid #ffa199;
 }
+
+[v-cloak] {
+  display: none;
+}
+
+#paper-list1-wrapper, #paper-list2-wrapper, #paper-list3-wrapper {
+    position: absolute;
+    background: #eeeecc;
+    top: 10px;
+    width: 280px;
+    height: 100%;
+}
+
+#paper-list1-wrapper {
+    left: 10px;
+}
+
+#paper-list2-wrapper {
+    left: 310px;
+}
+
+#paper-list3-wrapper {
+    left: 610px;
+}
+
 
 #search-box {
     position: absolute;

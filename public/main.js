@@ -3,13 +3,13 @@
 //   console.log(data);
 // });
 
-
 function initializeData() {
   const d = localStorage.getItem('cols.papers');
   if (!d)
     localStorage.setItem('cols.papers', '[]');
   const papers = JSON.parse(localStorage.getItem('cols.papers'));
   update_paper_list(papers);
+  $.post('/start_mock_sequence');
 }
 
 initializeData();
@@ -20,7 +20,6 @@ var globalState = {
   scale: 1
 };
 
-
 pubnub = new PubNub({
   publishKey: "pub-c-c19c6cd9-7cd8-4df6-99eb-f74cef20df2f",
   subscribeKey: "sub-c-7192bdba-979e-11e7-9b33-b625e713fcab"
@@ -30,22 +29,45 @@ pubnub.subscribe({
   channels: ['browse_history']
 });
 
+var example1 = new Vue({
+  el: '#paper-list1-wrapper',
+  data: {
+    items: [
+    ]
+  }
+});
+
+var example2 = new Vue({
+  el: '#paper-list2-wrapper',
+  data: {
+    items: [
+    ]
+  }
+});
+
+var example3 = new Vue({
+  el: '#paper-list3-wrapper',
+  data: {
+    items: [
+    ]
+  }
+});
 
 
 pubnub.addListener({
   message: (d) => {
+    const m = d.message;
     console.log('pubnub.subscribe', d);
-    if(d.message.action == 'change_tab'){
-      var p = $('<div/>');
-      p.attr('class','paper-list-entry');
-      p.html('アクティブ: ' + d.message.title);
-      $('#paper-list').append(p);
-    }else if (d.message.action == 'browse'){
-      if(d.message.title){
-        var p = $('<div/>');
-        p.attr('class','paper-list-entry');
-        p.html('開きました: ' + d.message.title);
-        $('#paper-list').append(p);
+    const target = m.user == 'Alice' ? example1 : example2;
+    if(m.action == 'search'){
+        target.items.push({action: m.action, message: `[${m.searchId}] 検索：${m.keyword} → ${m.num_results} results.`});
+    }else if(m.action == 'change_tab'){
+        target.items.push({action: m.action, message: `アクティブ：${m.title}`});      
+    }else if (m.action == 'browse'){
+      if (m.parent){
+        target.items.push({action: m.action, message: `開きました：${m.parent} -> ${m.title}`});
+      } else if(m.title){
+        target.items.push({action: m.action, message: '開きました：' + m.title});
       }
     }
   }

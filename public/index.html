@@ -15,9 +15,44 @@
     <input title="Search word" id="search-word"/>
     <button id="search-go" class="btn btn-default">Go</button>
 </div>
-<div id="paper-list">
-
+<!-- <div id="paper-list">
+  <div v-for="item in items" class='paper-list-entry'> 
+    {{ item.message }}
+  </div>
 </div>
+ -->
+ <div id="paper-list1-wrapper">
+   <h3>Alice</h3>
+   確認した論文数：{{_.countBy(items,(item) => {return item.action;})['browse']}}<br>
+   検索回数：{{_.countBy(items,(item) => {return item.action;})['search']}}
+<ul v-cloak id="paper-list1">
+  <li v-for="item in items">
+    {{ item.message }}
+  </li>
+</ul>
+ </div>
+
+ <div id="paper-list2-wrapper">
+   <h3>Bob</h3>
+   確認した論文数：{{_.countBy(items,(item) => {return item.action;})['browse']}}<br>
+   検索回数：{{_.countBy(items,(item) => {return item.action;})['search']}}
+<ul id="paper-list2">
+  <li v-for="item in items">
+    {{ item.message }}
+  </li>
+</ul>
+</div>
+
+ <div id="paper-list3-wrapper">
+   確認した論文数：{{_.countBy(items,(item) => {return item.action;})['browse']}}<br>
+   検索回数：{{_.countBy(items,(item) => {return item.action;})['search']}}
+<ul id="paper-list3">
+  <li v-for="item in items">
+    {{ item.message }}
+  </li>
+</ul>
+</div>
+
 <!--<iframe id="pdf-view" src="compressed.tracemonkey-pldi-09.pdf" frameborder="0" width="600" height="800"></iframe>-->
 <div id="paper-info">
     <h2 id="paper-title"></h2>
@@ -34,6 +69,8 @@
 <script type="text/javascript" src="pubnub.min.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
+
 
 <script src="paper_list.js"></script>
 <script src="main.js"></script>
