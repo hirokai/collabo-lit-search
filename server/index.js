@@ -14,8 +14,16 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+
+var searchId = 0;
+
 app.post('/add_history', (req, res) => {
   console.log(req.body);
+  var msg = req.body;
+  if(msg.action == 'search'){
+    searchId += 1;
+    msg.searchId = searchId;
+  }
   var publishConfig = {
     channel : "browse_history",
     message : req.body

@@ -9,7 +9,7 @@ function initializeData() {
     localStorage.setItem('cols.papers', '[]');
   const papers = JSON.parse(localStorage.getItem('cols.papers'));
   update_paper_list(papers);
-  $.post('/start_mock_sequence');
+  //$.post('/start_mock_sequence');
 }
 
 initializeData();
