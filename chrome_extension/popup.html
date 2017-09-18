@@ -4,8 +4,9 @@
  "browser_action" field in manifest.json contains the "default_popup" key with
  value "popup.html".
  -->
-<html>
+<html lang="ja">
   <head>
+    <meta charset="utf-8">
     <title>Getting Started Extension's Popup</title>
     <style>
       body {
@@ -17,7 +18,8 @@
         white-space: pre;
         text-overflow: ellipsis;
         overflow: hidden;
-        max-width: 400px;
+        max-width: 800px;
+        width: 400px;
       }
     </style>
 
@@ -30,6 +32,10 @@
     <script src="popup.js"></script>
   </head>
   <body>
+  <script src="jquery.min.js"></script>
+    <div id="config">
+      <label for="username">ユーザー名</label><input type="text" id="username"><button id="set_username">設定</button>
+    </div>
     <div id="status"></div>
     <img id="image-result" hidden>
   </body>

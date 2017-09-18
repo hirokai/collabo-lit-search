@@ -12,6 +12,7 @@
   "permissions": [
     "activeTab",
     "tabs",
+    "storage",
     "notifications",
     "http://localhost:3000/",
     "https://ajax.googleapis.com/"
